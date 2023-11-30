@@ -6,7 +6,7 @@ from transformers.trainer_utils import PredictionOutput
 from typing import Tuple
 from tqdm.auto import tqdm
 import nltk
-nltk.download()
+nltk.download('stopwords')
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 
