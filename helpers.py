@@ -45,7 +45,7 @@ def prepare_dataset_nli(examples, tokenizer, max_seq_length=None):
 
 
     print("######", premises)
-    print("######", hypothesis)
+    print("######", hypotheses)
 
     examples['premise'] = premises
     examples['hypothesis'] = hypotheses
