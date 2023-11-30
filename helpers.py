@@ -5,14 +5,51 @@ from transformers import Trainer, EvalPrediction
 from transformers.trainer_utils import PredictionOutput
 from typing import Tuple
 from tqdm.auto import tqdm
+import nltk
+nltk.download()
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
 
 QA_MAX_ANSWER_LENGTH = 30
-
+##stop_words = set(stopwords.words("english"))
 
 # This function preprocesses an NLI dataset, tokenizing premises and hypotheses.
 def prepare_dataset_nli(examples, tokenizer, max_seq_length=None):
+    print(" ########### In to tokenizer ")
     max_seq_length = tokenizer.model_max_length if max_seq_length is None else max_seq_length
 
+    premises = []
+    for sentence in examples['premise']:
+    # Tokenize the sentence
+        tokens = word_tokenize(sentence)
+
+    # Remove stop words
+        filtered_tokens = [token for token in tokens if token.lower() not in stop_words]
+
+    # Rejoin the words
+        filtered_sentence = " ".join(filtered_tokens)
+        premises.append(filtered_sentence)
+
+    hypotheses = []
+    for sentence in examples['hypothesis']:
+    # Tokenize the sentence
+        tokens = word_tokenize(sentence)
+
+    # Remove stop words
+        filtered_tokens = [token for token in tokens if token.lower() not in stop_words]
+
+    # Rejoin the words
+        filtered_sentence = " ".join(filtered_tokens)
+        hypotheses.append(filtered_sentence)
+
+
+    print("######", premises)
+    print("######", hypothesis)
+
+    examples['premise'] = premises
+    examples['hypothesis'] = hypotheses
+
+    
     tokenized_examples = tokenizer(
         examples['premise'],
         examples['hypothesis'],
@@ -20,6 +57,8 @@ def prepare_dataset_nli(examples, tokenizer, max_seq_length=None):
         max_length=max_seq_length,
         padding='max_length'
     )
+    
+    ##print(tokenized_examples[])
 
     tokenized_examples['label'] = examples['label']
     return tokenized_examples

@@ -1,0 +1,10 @@
+
+{"premise": "The boys draw in the sand with sticks.", "hypothesis": "The children play simply.", "label": 0}
+{"premise": "An older lady in a black shirt is adding ingredients to a KitchenAid mixing bowl as a crowd looks on.", "hypothesis": "A man cutting vegetables uses a sharp knife.", "label": 2}
+{"premise": "Number 44 looks over his shoulder to see Number 8 closing in on him.", "hypothesis": "Number 44 is ahead of number 8.", "label": 0}
+{"premise": "Three construction workers work along side the street, with one man in a blue jacket and orange safety vest shoveling, and two others holding a pole.", "hypothesis": "Three construction workers are working on the street.", "label": 1}
+{"premise": "A heavyset guy in a kilt at what appears to be a renaissance festival", "hypothesis": "A heavy guy is at a festival.", "label": 0}
+{"premise": "A man wearing a light blue shirt and a woman with a black and white blouse are sitting at a table, behind an ornate fence with some vines attached to it.", "hypothesis": "There is a blue shirt.", "label": 0}
+{"premise": "Actors performing a dance on a stage.", "hypothesis": "Actors are dancing for a street performance.", "label": 2}
+{"premise": "Children are playing tug-of-war.", "hypothesis": "The children are playing.", "label": 0}
+{"premise": "Two dogs splash through the water.", "hypothesis": "Two dogs are begging for food in the kitchen.", "label": 2}
