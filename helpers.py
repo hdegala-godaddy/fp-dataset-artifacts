@@ -12,7 +12,7 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 
 QA_MAX_ANSWER_LENGTH = 30
-##stop_words = set(stopwords.words("english"))
+stop_words = set(stopwords.words("english"))
 
 # This function preprocesses an NLI dataset, tokenizing premises and hypotheses.
 def prepare_dataset_nli(examples, tokenizer, max_seq_length=None):
