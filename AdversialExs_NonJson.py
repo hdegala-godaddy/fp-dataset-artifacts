@@ -1,4 +1,4 @@
-rom transformers import AutoModelForSequenceClassification, AutoTokenizer
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
 from nlpaug.util import Action
 import nlpaug.augmenter.word as naw
 from textattack.datasets import HuggingFaceDataset
