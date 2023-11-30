@@ -2,7 +2,7 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer
 from textattack.augmentation import WordNetAugmenter
 from textattack.attack_recipes import TextFoolerJin2019
 from textattack.datasets import HuggingFaceDataset
-from textattack.attack_methods import Attack
+from textattack import Attack
 
 # Load the pre-trained Electra model and tokenizer
 model_name = "google/electra-small-discriminator"
