@@ -1,5 +1,7 @@
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
-from textrobust import generate
+from nlpaug.util import Action
+import nlpaug.augmenter.word as naw
+from textattack.datasets import HuggingFaceDataset
 
 # Load the pre-trained Electra model and tokenizer
 model_name = "google/electra-small-discriminator"
@@ -7,32 +9,37 @@ model = AutoModelForSequenceClassification.from_pretrained(model_name)
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 # Create a dataset using SNLI data
-# Note: You may need to install the `nltk` library for WordNet. You can do this with `pip install nltk`.
-from textattack.datasets import HuggingFaceDataset
 dataset = HuggingFaceDataset("snli", None, "test")
 
-# Augment the dataset using WordNet augmentation
-from textattack.augmentation import WordNetAugmenter
-augmenter = WordNetAugmenter()
+# Create a WordNet-based augmenter
+augmenter = naw.SynonymAug(aug_src='wordnet')
 
-# Specify the attack recipe (TextFoolerJin2019 is used here as an example)
-from textattack.attack_recipes import TextFoolerJin2019
-attack_recipe = TextFoolerJin2019()
+# Function to perform an adversarial attack
+def attack_example(example):
+    premise = example["premise"]
+    hypothesis = example["hypothesis"]
+    text = f"{premise} {hypothesis}"
+
+    # Augment the text using WordNet-based synonym replacement
+    augmented_text = augmenter.augment(text)
+
+    # Tokenize the augmented text
+    inputs = tokenizer(augmented_text, return_tensors="pt", truncation=True)
+
+    # Make a prediction using the model
+    outputs = model(**inputs)
+    predictions = outputs.logits.argmax(dim=1)
+
+    # Convert the predictions to a human-readable label
+    predicted_label = tokenizer.convert_ids_to_tokens(predictions.item())
+
+    return text, augmented_text, predicted_label
 
 # Generate adversarial examples
 for example in dataset:
-    premise = example["premise"]
-    hypothesis = example["hypothesis"]
-    
-    # Combine premise and hypothesis
-    text = f"{premise} {hypothesis}"
-
-    # Augment the text using WordNet augmentation
-    augmented_text = augmenter.augment(text)
-
-    # Generate adversarial examples
-    adversarial_text = generate(augmented_text, model, tokenizer)
+    original_text, adversarial_text, predicted_label = attack_example(example)
 
     # Print the original and adversarial examples
-    print(f"Original: {text}")
-    print(f"Adversarial: {adversarial_text}\n")
+    print(f"Original: {original_text}")
+    print(f"Adversarial: {adversarial_text}")
+    print(f"Predicted Label: {predicted_label}\n")
