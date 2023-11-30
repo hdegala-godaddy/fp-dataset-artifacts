@@ -9,6 +9,7 @@ model_name = "google/electra-small-discriminator"
 model = AutoModelForSequenceClassification.from_pretrained(model_name)
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
+
 # Create a dataset using SNLI data
 dataset = HuggingFaceDataset("snli", None, "test")
 
