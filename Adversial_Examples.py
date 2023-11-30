@@ -2,7 +2,7 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer
 from textattack.augmentation import WordNetAugmenter
 from textattack.attack_recipes import TextFoolerJin2019
 from textattack.datasets import HuggingFaceDataset
-from textattack import Attack
+from textattack import Attack, GoalFunction
 
 # Load the pre-trained Electra model and tokenizer
 model_name = "google/electra-small-discriminator"
@@ -16,14 +16,16 @@ dataset = HuggingFaceDataset("snli", None, "test")
 augmenter = WordNetAugmenter()
 
 # Custom goal function for untargeted classification
-def custom_goal_function(inputs):
-    return model(inputs)
+class CustomGoalFunction(GoalFunction):
+    def __call__(self, model_output):
+        # Customize this function based on the output of your model
+        return model_output
 
 # Specify the attack recipe (TextFoolerJin2019 is used here as an example)
 attack_recipe = TextFoolerJin2019()
 
 # Instantiate the attack method with the model and tokenizer
-attack = Attack(goal_function=custom_goal_function, transformation=attack_recipe, model_wrapper=(model, tokenizer))
+attack = Attack(goal_function=CustomGoalFunction(), transformation=attack_recipe, model_wrapper=(model, tokenizer))
 
 # Generate adversarial examples
 for example in dataset:
