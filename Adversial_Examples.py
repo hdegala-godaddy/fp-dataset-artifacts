@@ -12,9 +12,6 @@ tokenizer = AutoTokenizer.from_pretrained(model_name)
 # Create a dataset using SNLI data
 dataset = HuggingFaceDataset("snli", None, "test")
 
-# Specify the attack recipe (TextFoolerJin2019 is used here as an example)
-attack_recipe = TextFoolerJin2019.build(model, tokenizer)
-
 # Augment the dataset using WordNet augmentation
 augmenter = WordNetAugmenter()
 
@@ -22,8 +19,11 @@ augmenter = WordNetAugmenter()
 def custom_goal_function(inputs):
     return model(inputs)
 
-# Instantiate the attack method
-attack = Attack(goal_function=custom_goal_function, constraints=attack_recipe.constraints(), transformation=attack_recipe.transformation())
+# Specify the attack recipe (TextFoolerJin2019 is used here as an example)
+attack_recipe = TextFoolerJin2019()
+
+# Instantiate the attack method with the model and tokenizer
+attack = Attack(goal_function=custom_goal_function, transformation=attack_recipe, model_wrapper=(model, tokenizer))
 
 # Generate adversarial examples
 for example in dataset:
