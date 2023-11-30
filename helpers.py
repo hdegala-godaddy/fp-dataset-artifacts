@@ -44,8 +44,8 @@ def prepare_dataset_nli(examples, tokenizer, max_seq_length=None):
         hypotheses.append(filtered_sentence)
 
 
-    print("######", premises)
-    print("######", hypotheses)
+    ###print("######", premises)
+    ####print("######", hypotheses)
 
     examples['premise'] = premises
     examples['hypothesis'] = hypotheses
