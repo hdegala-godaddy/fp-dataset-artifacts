@@ -16,8 +16,8 @@ augmenter = naw.SynonymAug(aug_src='wordnet')
 
 # Function to perform an adversarial attack
 def attack_example(example):
-    premise = example["premise"]
-    hypothesis = example["hypothesis"]
+    premise = example[0]["premise"]
+    hypothesis = example[0]["hypothesis"]
     text = f"{premise} {hypothesis}"
 
     # Augment the text using WordNet-based synonym replacement
