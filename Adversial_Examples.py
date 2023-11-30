@@ -1,3 +1,4 @@
+import json
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 from nlpaug.util import Action
 import nlpaug.augmenter.word as naw
@@ -31,15 +32,27 @@ def attack_example(example):
     predictions = outputs.logits.argmax(dim=1)
 
     # Convert the predictions to a human-readable label
-    predicted_label = tokenizer.convert_ids_to_tokens(predictions.item())
+    predicted_label = predictions.item()
 
-    return text, augmented_text, predicted_label
+    return {
+        "premise": premise,
+        "hypothesis": hypothesis,
+        "label": predicted_label
+    }
 
-# Generate adversarial examples
-for example in dataset:
-    original_text, adversarial_text, predicted_label = attack_example(example)
+# Output JSONL file
+output_file_path = "adversarial_results.jsonl"
+limit = 1000
+count = 0
 
-    # Print the original and adversarial examples
-    print(f"Original: {original_text}")
-    print(f"Adversarial: {adversarial_text}")
-    print(f"Predicted Label: {predicted_label}\n")
+# Generate adversarial examples and save to JSONL file
+with open(output_file_path, "w") as output_file:
+    for example in dataset:
+        result = attack_example(example)
+        output_file.write(json.dumps(result) + "\n")
+        
+        count += 1
+        if count >= limit:
+            break
+
+print(f"Adversarial results saved to: {output_file_path}")
