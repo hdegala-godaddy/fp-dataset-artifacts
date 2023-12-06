@@ -1,2 +1,7 @@
 *.pyc
 output/
+snli_1.0
+CombiningAdverserialAndContrastSets/
+scitail_1.0_dev.jsonl
+scitail_1.0_extracted_with_dash.jsonl
+train_hard_top_25000.jsonl
